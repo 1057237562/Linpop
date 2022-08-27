@@ -27,10 +27,18 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    util.cpp
+    util.cpp \
+    linserver.cpp \
+    linclient.cpp \
+    sendfile.cpp \
+    downfile.cpp
 
 HEADERS += \
-        mainwindow.h
+        mainwindow.h \
+    linserver.h \
+    linclient.h \
+    sendfile.h \
+    downfile.h
 
 FORMS += \
         mainwindow.ui

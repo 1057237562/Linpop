@@ -1,5 +1,5 @@
-#include<bits/stdc++.h>
-
+#ifndef HEADER_DATA
+#define HEADER_DATA
 #include <QString>
 #include <QDateTime>
 
@@ -29,3 +29,5 @@ static Data FromString(QString str){
     QStringList arr = str.split("</>");
     return {arr.at(0),arr.at(1),QDateTime::fromString(arr.at(2))};
 }
+
+#endif
