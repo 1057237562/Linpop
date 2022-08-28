@@ -2,6 +2,7 @@
 #define HEADER_DATA
 #include <QString>
 #include <QDateTime>
+#include <QDebug>
 
 struct Data{
     QString str;
@@ -20,8 +21,8 @@ struct Data{
         return str;
     }
 
-    QString convert(){
-        return str+"</>"+sender+"</>"+timestamp.toString();
+    QString convert(QString append = ""){
+        return str+"</>"+sender+"</>"+timestamp.toString() + append;
     }
 };
 

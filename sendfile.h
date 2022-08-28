@@ -18,6 +18,8 @@ private:
 
 signals:
     void connected();
+    void sent();
+    void update(int percentage);
 };
 
 #endif // SENDFILE_H

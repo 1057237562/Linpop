@@ -23,6 +23,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ui->progressBar->setVisible(false);
 }
 
 MainWindow::~MainWindow()
@@ -58,7 +59,10 @@ void MainWindow::on_actionClient_triggered()
 void MainWindow::on_actionHost_triggered()
 {
     sport = QInputDialog::getInt(this, "输入字符串", "请输入端口号：",25565);
+    QThread* t = new QThread;
     lserver = new Linserver(sport);
+    lserver->moveToThread(t);
+    t->start();
     sip = "127.0.0.1";
     lclient = new Linclient(sip,sport);
     connect(lclient,SIGNAL(dataReceived(Data)),this,SLOT(ProceedData(Data)));
@@ -88,8 +92,18 @@ void MainWindow::on_sendFile_clicked()
     connect(worker,&sendFile::connected,this,[=](){
         emit send(path);
     });
+    ui->progressBar->setVisible(true);
+    connect(worker,&sendFile::update,ui->progressBar,&QProgressBar::setValue);
     t->start();
     emit startConnect(sip,sport);
+    connect(worker,&sendFile::sent,this,[=](){
+        t->quit();
+        t->wait();
+        worker->deleteLater();
+        t->deleteLater();
+        ui->progressBar->setVisible(false);
+        ui->progressBar->setValue(0);
+    });
 }
 
 void MainWindow::on_textBrowser_anchorClicked(const QUrl &arg1)
@@ -104,9 +118,19 @@ void MainWindow::on_textBrowser_anchorClicked(const QUrl &arg1)
     worker->moveToThread(t);
     connect(this,&MainWindow::fetch,worker,&downFile::fetch);
     connect(this,&MainWindow::startConnect,worker,&downFile::connectHost);
+    connect(worker,&downFile::update,ui->progressBar,&QProgressBar::setValue);
+    ui->progressBar->setVisible(true);
     connect(worker,&downFile::connected,this,[=](){
         emit fetch(fname,arg1.toString());
     });
     t->start();
     emit startConnect(sip,sport);
+    connect(worker,&downFile::downed,this,[=](){
+        t->quit();
+        t->wait();
+        t->deleteLater();
+        worker->deleteLater();
+        ui->progressBar->setVisible(false);
+        ui->progressBar->setValue(0);
+    });
 }

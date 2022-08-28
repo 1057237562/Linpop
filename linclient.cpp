@@ -11,7 +11,7 @@ Linclient::Linclient(QString serverip,qint16 p)
     {
         QString msg = socket->readAll();
         Data data = FromString(msg);
-        content.push_back(data);
+        socket->write(QString("Action:Response:").toUtf8().data());
         emit dataReceived(data);
     });
 }

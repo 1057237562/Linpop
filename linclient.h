@@ -18,7 +18,7 @@ public:
     QTcpSocket* socket;
     QString ip;
     qint16 port = 25565;
-    QList<Data> content;
+    //QList<Data> content;
     QString filename;
 
     Linclient(QString,qint16);
