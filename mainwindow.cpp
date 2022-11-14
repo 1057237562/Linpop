@@ -49,6 +49,7 @@ void MainWindow::ProceedData(Data data){
     ui->textBrowser->append(data.fline());
     ui->textBrowser->setTextColor(Qt::black);
     ui->textBrowser->append(data.sline());
+    QApplication::alert(this,10);
 }
 
 void MainWindow::on_sendbtn_clicked()

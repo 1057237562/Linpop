@@ -10,7 +10,9 @@ Linserver::Linserver(qint16 p = 25565)
     if(chsave.exists()){
         while(!chsave.atEnd()){
             QString str = chsave.readLine().trimmed();
-            content.push_back(FromString(str));
+            Data d = FromString(str);
+            if(d.sender != "")
+                content.push_back(FromString(str));
         }
     }
     chsave.close();
