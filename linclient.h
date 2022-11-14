@@ -20,6 +20,7 @@ public:
     qint16 port = 25565;
     //QList<Data> content;
     QString filename;
+    bool fetching = true;
 
     Linclient(QString,qint16);
     void ChangeNickname(QString);

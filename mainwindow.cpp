@@ -11,6 +11,7 @@
 #include<sendfile.h>
 #include<downfile.h>
 #include<QThread>
+#include<QKeyEvent>
 
 Linserver* lserver;
 Linclient* lclient;
@@ -31,7 +32,19 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::keyPressEvent(QKeyEvent *event){
+    switch(event->key()){
+        case Qt::Key_Enter:
+        case Qt::Key_Return:
+    {
+        on_sendbtn_clicked();
+    }
+        break;
+    }
+}
+
 void MainWindow::ProceedData(Data data){
+    ui->textBrowser->moveCursor(QTextCursor::End);
     ui->textBrowser->setTextColor(Qt::blue);
     ui->textBrowser->append(data.fline());
     ui->textBrowser->setTextColor(Qt::black);
@@ -53,6 +66,7 @@ void MainWindow::on_actionClient_triggered()
     sip = QInputDialog::getText(this, "输入字符串", "请输入IP：", QLineEdit::Normal,"127.0.0.1");
     sport = QInputDialog::getInt(this, "输入字符串", "请输入端口号：",25565);
     lclient = new Linclient(sip,sport);
+    ui->connectInfo->setText("Current Connect IP:\n"+sip);
     connect(lclient,SIGNAL(dataReceived(Data)),this,SLOT(ProceedData(Data)));
 }
 
@@ -64,6 +78,7 @@ void MainWindow::on_actionHost_triggered()
     lserver->moveToThread(t);
     t->start();
     sip = "127.0.0.1";
+    ui->connectInfo->setText("Current Connect IP:\n"+sip);
     lclient = new Linclient(sip,sport);
     connect(lclient,SIGNAL(dataReceived(Data)),this,SLOT(ProceedData(Data)));
 }
@@ -133,4 +148,12 @@ void MainWindow::on_textBrowser_anchorClicked(const QUrl &arg1)
         ui->progressBar->setVisible(false);
         ui->progressBar->setValue(0);
     });
+}
+
+void MainWindow::on_actionDelete_Chat_history_triggered()
+{
+    QFile file(QCoreApplication::applicationDirPath()+"/Chat.history");
+    if(file.exists()){
+        file.remove();
+    }
 }

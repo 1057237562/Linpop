@@ -92,6 +92,25 @@
      <number>0</number>
     </property>
    </widget>
+   <widget class="QLabel" name="connectInfo">
+    <property name="geometry">
+     <rect>
+      <x>500</x>
+      <y>40</y>
+      <width>171</width>
+      <height>191</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Box</enum>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Current Connect IP:&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -114,6 +133,7 @@
      <string>Settings</string>
     </property>
     <addaction name="actionChange_NickName"/>
+    <addaction name="actionDelete_Chat_history"/>
    </widget>
    <addaction name="menuHost"/>
    <addaction name="menuSettings"/>
@@ -140,6 +160,11 @@
   <action name="actionChange_NickName">
    <property name="text">
     <string>Change NickName</string>
+   </property>
+  </action>
+  <action name="actionDelete_Chat_history">
+   <property name="text">
+    <string>Delete Chat history</string>
    </property>
   </action>
  </widget>

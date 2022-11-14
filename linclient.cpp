@@ -7,12 +7,20 @@ Linclient::Linclient(QString serverip,qint16 p)
     ip = serverip;
     socket = new QTcpSocket(this);
     socket->connectToHost(QHostAddress(ip),port);
+    connect(socket,&QTcpSocket::connected,this,[=](){
+        socket->write(QString("Action:Fetch Chat History:").toUtf8().data());
+    });
     connect(socket, &QTcpSocket::readyRead, this, [=]()
     {
         QString msg = socket->readAll();
-        Data data = FromString(msg);
-        socket->write(QString("Action:Response:").toUtf8().data());
-        emit dataReceived(data);
+        if(msg.contains("Action:Finished:")){
+            fetching = false;
+        }else{
+            Data data = FromString(msg);
+            if(fetching)
+                socket->write(QString("Action:Response:").toUtf8().data());
+            emit dataReceived(data);
+        }
     });
 }
 

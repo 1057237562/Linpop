@@ -27,12 +27,6 @@ Linserver::Linserver(qint16 p = 25565)
 
         nmap[QString("%1:%2").arg(ip).arg(port)] = QString("%1:%2").arg(ip).arg(port);
 
-        for(Data d:content){
-            tcpsocket->write(d.convert().toUtf8().data());
-            tcpsocket->waitForReadyRead();
-            tcpsocket->flush();
-        }
-
         connect(tcpsocket,&QTcpSocket::readyRead,[=](){
             if(servermode == 0){
                 QString readData = tcpsocket->readAll();
@@ -51,7 +45,7 @@ Linserver::Linserver(qint16 p = 25565)
                     }
                     QString ip = tcpsocket->peerAddress().toString();
                     qint16 port = tcpsocket->peerPort();
-                    Data data = {"<a href=\""+filename+"\">"+filename+"</a>",nmap[QString("%1:%2").arg(ip).arg(port)],QDateTime::fromTime_t(QDateTime::currentSecsSinceEpoch())};
+                    Data data = {"<a href=\""+filename+"\">"+filename+"</a>\n",nmap[QString("%1:%2").arg(ip).arg(port)],QDateTime::fromTime_t(QDateTime::currentSecsSinceEpoch())};
                     content.push_back(data);
                     saveContent();
 
@@ -60,16 +54,26 @@ Linserver::Linserver(qint16 p = 25565)
                     }
                     servermode = 1;
                 }else if(readData.contains("Action:Download File:")){
+                    qDebug()<<readData;
                     QString fn = QCoreApplication::applicationDirPath()+"/"+readData.replace("Action:Download File:","");
                     QFile file(fn);
                     QFileInfo info(file);
                     file.open(QIODevice::ReadOnly);
-                    QByteArray qb = file.readAll();
                     tcpsocket->write(QString::number(info.size(),10).toUtf8().data());
-                    tcpsocket->flush();
                     tcpsocket->waitForReadyRead();
-                    tcpsocket->write(qb);
                     tcpsocket->flush();
+                    while(!file.atEnd()){
+                            QByteArray qb = file.read(65536);
+                            tcpsocket->write(qb);
+                            tcpsocket->flush();
+                    }
+                }else if(readData.contains("Action:Fetch Chat History:")){
+                    for(Data d:content){
+                        tcpsocket->write(d.convert().toUtf8().data());
+                        tcpsocket->waitForReadyRead();
+                        tcpsocket->flush();
+                    }
+                    tcpsocket->write(QString("Action:Finished:").toUtf8().data());
                 }else{
                     QString ip = tcpsocket->peerAddress().toString();
                     qint16 port = tcpsocket->peerPort();
@@ -90,6 +94,7 @@ Linserver::Linserver(qint16 p = 25565)
                     restsize -= arr.size();
                     file.write(arr);
                     tcpsocket->write(QString::number(100-(int)((double)restsize/filesize*100.0),10).toUtf8().data());
+                    tcpsocket->flush();
                 }
                 if(restsize <= 0){
                     servermode = 0;

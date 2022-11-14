@@ -22,12 +22,12 @@ struct Data{
     }
 
     QString convert(QString append = ""){
-        return str+"</>"+sender+"</>"+timestamp.toString() + append;
+        return str+"<~>"+sender+"<~>"+timestamp.toString() + append;
     }
 };
 
 static Data FromString(QString str){
-    QStringList arr = str.split("</>");
+    QStringList arr = str.split("<~>");
     return {arr.at(0),arr.at(1),QDateTime::fromString(arr.at(2))};
 }
 

@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include<util.cpp>
+#include <QKeyEvent>
 
 namespace Ui {
 class MainWindow;
@@ -34,8 +35,12 @@ private slots:
 
     void ProceedData(Data data);
 
+    void on_actionDelete_Chat_history_triggered();
+
 private:
     Ui::MainWindow *ui;
+protected:
+    virtual void keyPressEvent(QKeyEvent *ev);
 };
 
 #endif // MAINWINDOW_H
