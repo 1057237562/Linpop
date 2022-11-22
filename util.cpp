@@ -29,7 +29,7 @@ struct Data{
 static Data FromString(QString str){
     QStringList arr = str.split("<~>");
     if(arr.size()<3)
-        return {"","",""};
+        return {"","",QDateTime::currentDateTime()};
     return {arr.at(0),arr.at(1),QDateTime::fromString(arr.at(2))};
 }
 

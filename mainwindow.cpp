@@ -49,7 +49,7 @@ void MainWindow::ProceedData(Data data){
     ui->textBrowser->append(data.fline());
     ui->textBrowser->setTextColor(Qt::black);
     ui->textBrowser->append(data.sline());
-    QApplication::alert(this,10);
+    QApplication::alert(this);
 }
 
 void MainWindow::on_sendbtn_clicked()
@@ -64,10 +64,22 @@ void MainWindow::on_sendbtn_clicked()
 
 void MainWindow::on_actionClient_triggered()
 {
-    sip = QInputDialog::getText(this, "输入字符串", "请输入IP：", QLineEdit::Normal,"127.0.0.1");
-    sport = QInputDialog::getInt(this, "输入字符串", "请输入端口号：",25565);
+    QFile chsave(QCoreApplication::applicationDirPath()+"/config.cfg");
+    if(chsave.exists()){
+        chsave.open(QIODevice::ReadOnly);
+        QString str = chsave.readLine().trimmed();
+        sip = QInputDialog::getText(this, "输入字符串", "请输入IP：", QLineEdit::Normal,str.split(":").at(0));
+        sport = QInputDialog::getInt(this, "输入字符串", "请输入端口号：",str.split(":").at(1).toInt());
+        chsave.close();
+    }else{
+        sip = QInputDialog::getText(this, "输入字符串", "请输入IP：", QLineEdit::Normal,"127.0.0.1");
+        sport = QInputDialog::getInt(this, "输入字符串", "请输入端口号：",25565);
+    }
     lclient = new Linclient(sip,sport);
     ui->connectInfo->setText("Current Connect IP:\n"+sip);
+    chsave.open(QIODevice::ReadWrite | QIODevice::Truncate);
+    chsave.write((sip+":"+QString::number(sport)).toStdString().c_str());
+    chsave.close();
     connect(lclient,SIGNAL(dataReceived(Data)),this,SLOT(ProceedData(Data)));
 }
 
@@ -157,4 +169,9 @@ void MainWindow::on_actionDelete_Chat_history_triggered()
     if(file.exists()){
         file.remove();
     }
+}
+
+void MainWindow::on_actionAdd_Plugins_triggered()
+{
+
 }

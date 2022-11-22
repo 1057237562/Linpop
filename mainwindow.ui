@@ -135,8 +135,15 @@
     <addaction name="actionChange_NickName"/>
     <addaction name="actionDelete_Chat_history"/>
    </widget>
+   <widget class="QMenu" name="menuPlugins">
+    <property name="title">
+     <string>Plugins</string>
+    </property>
+    <addaction name="actionAdd_Plugins"/>
+   </widget>
    <addaction name="menuHost"/>
    <addaction name="menuSettings"/>
+   <addaction name="menuPlugins"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -165,6 +172,11 @@
   <action name="actionDelete_Chat_history">
    <property name="text">
     <string>Delete Chat history</string>
+   </property>
+  </action>
+  <action name="actionAdd_Plugins">
+   <property name="text">
+    <string>Add Plugins</string>
    </property>
   </action>
  </widget>
