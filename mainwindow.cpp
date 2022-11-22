@@ -1,7 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QTcpServer>
-#include <ETcpSocket>
 #include <QMessageBox>
 #include <QInputDialog>
 #include <QFileInfo>
@@ -10,6 +9,7 @@
 #include<linclient.h>
 #include<sendfile.h>
 #include<downfile.h>
+#include<etcpsocket.h>
 #include<QThread>
 #include<QKeyEvent>
 

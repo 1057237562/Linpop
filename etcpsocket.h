@@ -7,6 +7,7 @@
 class ETcpSocket: public QTcpSocket
 {
 public:
+    ETcpSocket(QObject * parent=nullptr);
     QByteArray readAll();
     qint64 write(const char *data);
     qint64 write(const char *data, qint64 maxSize);

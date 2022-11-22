@@ -31,14 +31,16 @@ SOURCES += \
     linserver.cpp \
     linclient.cpp \
     sendfile.cpp \
-    downfile.cpp
+    downfile.cpp \
+    etcpsocket.cpp
 
 HEADERS += \
         mainwindow.h \
     linserver.h \
     linclient.h \
     sendfile.h \
-    downfile.h
+    downfile.h \
+    etcpsocket.h
 
 FORMS += \
         mainwindow.ui
