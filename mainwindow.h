@@ -37,6 +37,8 @@ private slots:
 
     void on_actionDelete_Chat_history_triggered();
 
+    void on_actionAdd_Plugins_triggered();
+
 private:
     Ui::MainWindow *ui;
 protected:

@@ -32,6 +32,7 @@ SOURCES += \
     linclient.cpp \
     sendfile.cpp \
     downfile.cpp \
+    extensionmanager.cpp \
     etcpsocket.cpp
 
 HEADERS += \
@@ -40,6 +41,7 @@ HEADERS += \
     linclient.h \
     sendfile.h \
     downfile.h \
+    extensionmanager.h \
     etcpsocket.h
 
 FORMS += \
