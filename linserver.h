@@ -3,7 +3,7 @@
 #include<QObject>
 #include<util.cpp>
 #include<QTcpServer>
-#include<QTcpSocket>
+#include<etcpsocket.h>
 #include<QList>
 #include<QMap>
 #include<QCoreApplication>
@@ -14,7 +14,7 @@ class Linserver:public QObject
     Q_OBJECT
 public:
     QTcpServer* server;
-    QList<QTcpSocket*> clientlist;
+    QList<ETcpSocket*> clientlist;
 
     qint16 port = 25565;
 

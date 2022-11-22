@@ -1,7 +1,7 @@
 #ifndef SENDFILE_H
 #define SENDFILE_H
 #include<QObject>
-#include<QTcpSocket>
+#include<etcpsocket.h>
 #include<QFile>
 #include<QFileInfo>
 #include<QHostAddress>
@@ -14,7 +14,7 @@ public:
     void connectHost(QString ip,qint16 port);
     void send(QString path);
 private:
-    QTcpSocket* socket;
+    ETcpSocket* socket;
 
 signals:
     void connected();

@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QTcpServer>
-#include <QTcpSocket>
+#include <ETcpSocket>
 #include <QMessageBox>
 #include <QInputDialog>
 #include <QFileInfo>

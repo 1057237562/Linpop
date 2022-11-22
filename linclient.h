@@ -6,7 +6,7 @@
 #include<QMap>
 #include<QString>
 #include<QCoreApplication>
-#include<QTcpSocket>
+#include<etcpsocket.h>
 #include<QHostAddress>
 
 class Linclient:public QObject
@@ -15,7 +15,7 @@ class Linclient:public QObject
 signals:
     void dataReceived(Data);
 public:
-    QTcpSocket* socket;
+    ETcpSocket* socket;
     QString ip;
     qint16 port = 25565;
     //QList<Data> content;

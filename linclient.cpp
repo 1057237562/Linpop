@@ -5,12 +5,12 @@ Linclient::Linclient(QString serverip,qint16 p)
 {
     port = p;
     ip = serverip;
-    socket = new QTcpSocket(this);
+    socket = new ETcpSocket(this);
     socket->connectToHost(QHostAddress(ip),port);
-    connect(socket,&QTcpSocket::connected,this,[=](){
+    connect(socket,&ETcpSocket::connected,this,[=](){
         socket->write(QString("Action:Fetch Chat History:").toUtf8().data());
     });
-    connect(socket, &QTcpSocket::readyRead, this, [=]()
+    connect(socket, &ETcpSocket::readyRead, this, [=]()
     {
         QString msg = socket->readAll();
         if(msg.contains("Action:Finished:")){

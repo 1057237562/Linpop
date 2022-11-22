@@ -6,10 +6,10 @@ sendFile::sendFile(QObject* parent) : QObject(parent)
 }
 
 void sendFile::connectHost(QString ip,qint16 port){
-    socket = new QTcpSocket(this);
+    socket = new ETcpSocket(this);
     socket->connectToHost(QHostAddress(ip),port);
-    connect(socket,&QTcpSocket::connected,this,&sendFile::connected);
-    connect(socket,&QTcpSocket::readyRead,this,[=](){
+    connect(socket,&ETcpSocket::connected,this,&sendFile::connected);
+    connect(socket,&ETcpSocket::readyRead,this,[=](){
         int progress = socket->readAll().toInt();
         qDebug()<<progress;
         emit update(progress);

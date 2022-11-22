@@ -21,7 +21,7 @@ Linserver::Linserver(qint16 p = 25565)
     server->listen(QHostAddress::Any,port);
 
     connect(server,&QTcpServer::newConnection,[=](){
-        QTcpSocket* tcpsocket = server->nextPendingConnection();
+        ETcpSocket* tcpsocket = server->nextPendingConnection();
         clientlist.push_back(tcpsocket);
 
         QString ip = tcpsocket->peerAddress().toString();
@@ -29,7 +29,7 @@ Linserver::Linserver(qint16 p = 25565)
 
         nmap[QString("%1:%2").arg(ip).arg(port)] = QString("%1:%2").arg(ip).arg(port);
 
-        connect(tcpsocket,&QTcpSocket::readyRead,[=](){
+        connect(tcpsocket,&ETcpSocket::readyRead,[=](){
             if(servermode == 0){
                 QString readData = tcpsocket->readAll();
                 if(readData.contains("Action:Response:")){
@@ -51,7 +51,7 @@ Linserver::Linserver(qint16 p = 25565)
                     content.push_back(data);
                     saveContent();
 
-                    for(QTcpSocket* client:clientlist){
+                    for(ETcpSocket* client:clientlist){
                         client->write(data.convert().toUtf8().data());
                     }
                     servermode = 1;
@@ -83,7 +83,7 @@ Linserver::Linserver(qint16 p = 25565)
                     content.push_back(data);
                     saveContent();
 
-                    for(QTcpSocket* client:clientlist){
+                    for(ETcpSocket* client:clientlist){
                         client->write(data.convert().toUtf8().data());
                     }
                 }
