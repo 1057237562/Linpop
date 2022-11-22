@@ -21,7 +21,7 @@ Linserver::Linserver(qint16 p = 25565)
     server->listen(QHostAddress::Any,port);
 
     connect(server,&QTcpServer::newConnection,[=](){
-        ETcpSocket* tcpsocket = server->nextPendingConnection();
+        ETcpSocket* tcpsocket = (ETcpSocket*)server->nextPendingConnection();
         clientlist.push_back(tcpsocket);
 
         QString ip = tcpsocket->peerAddress().toString();
