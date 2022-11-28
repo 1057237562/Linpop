@@ -1,6 +1,6 @@
 #include "etcpsocket.h"
 
-ETcpSocket::ETcpSocket(QObject *parent): QTcpSocket(parent){
+ETcpSocket::ETcpSocket(QObject *parent=nullptr): QTcpSocket(parent){
 }
 
 QByteArray ETcpSocket::readAll(){
@@ -14,6 +14,16 @@ QByteArray ETcpSocket::readAll(){
     return ba;
 }
 
+qint64 ETcpSocket::write(const QByteArray &byteArray){
+    QByteArray eba = byteArray;
+    char mask = 0xFF;
+    for(int i = 0; i < eba.size(); i++){
+	eba[i] = byteArray[i] ^ mask;
+	mask = eba[i];
+    }
+    return QTcpSocket::write(eba);
+}
+
 qint64 ETcpSocket::write(const char *data){
     return write(data, qstrlen(data));
 }
@@ -21,7 +31,7 @@ qint64 ETcpSocket::write(const char *data){
 qint64 ETcpSocket::write(const char *data, qint64 maxSize){
     char *edata = new char[maxSize];
     char mask = 0xFF;
-    for(int i = 0; i < maxSize; i++){
+    for(qint64 i = 0; i < maxSize; i++){
 	edata[i] = data[i] ^ mask;
 	mask = edata[i];
     }
